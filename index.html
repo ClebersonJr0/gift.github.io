@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compre seu Gift Card - Connect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+        }
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 200px;
+            margin: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .product-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .product-card h2 {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #333;
+        }
+        .product-card p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .buy-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .buy-button:hover {
+            background-color: #218838;
+        }
+        #modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options-list li {
+            padding: 10px 0;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .options-list li:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Connect</h1>
+    </header>
+    <div class="container">
+        <div class="section-title">Escolha seu Gift Card</div>
+        <div class="products">
+            <div class="product-card" onclick="showOptions('Apple')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">
+                <h2>Apple</h2>
+                <p>Música, apps e muito mais</p>
+                <button class="buy-button">Comprar</button>
+            </div>
+            <div class="product-card" onclick="showOptions('Spotify')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
+                <h2>Spotify</h2>
+                <p>Milhões de músicas</p>
+                <button class="buy-button">Comprar</button>
+            </div>
+            <div class="product-card" onclick="showOptions('Netflix')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" alt="Netflix">
+                <h2>Netflix</h2>
+                <p>Assista suas séries favoritas</p>
+                <button class="buy-button">Comprar</button>
+            </div>
+            <div class="product-card" onclick="showOptions('Google Play')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_Play_2022_icon.svg/1280px-Google_Play_2022_icon.svg.png" alt="Google Play">
+                <h2>Google Play</h2>
+                <p>Apps, jogos e muito mais</p>
+                <button class="buy-button">Comprar</button>
+            </div>
+            <div class="product-card" onclick="showOptions('PlayStation Store')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" alt="PlayStation Store">
+                <h2>PlayStation Store</h2>
+                <p>Jogos e muito mais</p>
+                <button class="buy-button">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <ul id="options-list" class="options-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        function showOptions(product) {
+            const options = {
+                "Apple": ["R$ 30", "R$ 50", "R$ 100"],
+                "Spotify": ["1 mês R$ 16,90", "3 meses R$ 50,70", "6 meses R$ 101,40"],
+                "Netflix": ["1 mês R$ 17", "3 meses R$ 51", "6 meses R$ 102"],
+                "Google Play": ["R$ 15", "R$ 30", "R$ 50"],
+                "PlayStation Store": ["R$ 20", "R$ 50", "R$ 100"]
+            };
+
+            document.getElementById('modal-title').innerText = `Opções de compra para ${product}`;
+            const optionsList = document.getElementById('options-list');
+            optionsList.innerHTML = '';
+
+            options[product].forEach(option => {
+                const li = document.createElement('li');
+                li.innerText = option;
+                li.onclick = function() {
+                    redirectToWhatsApp(product, option);
+                };
+                optionsList.appendChild(li);
+            });
+
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function redirectToWhatsApp(product, option) {
+            const weekdayPhoneNumber = "5533999449469"; // Número de WhatsApp para dias de semana
+            const weekendPhoneNumber = "5533999449469"; // Número de WhatsApp para fins de semana
+            const today = new Date();
+            const day = today.getDay(); // 0 é domingo, 6 é sábado
+
+            const phoneNumber = (day === 0 || day === 6) ? weekendPhoneNumber : weekdayPhoneNumber;
+            const message = `Olá, gostaria de comprar um Gift Card de ${option} ${product}.`;
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.location.href = whatsappURL;
+        }
+
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('modal')) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
